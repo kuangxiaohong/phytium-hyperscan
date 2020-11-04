@@ -213,10 +213,11 @@ void get_conf_stride_1(const u8 *itPtr, UNUSED const u8 *start_ptr,
     st4 = or128(st4, st6);
     st0 = or128(st0, st4);
     *s = or128(*s, st0);
-
-    *conf0 = movq(*s);
+    u64a tmp_conf0 = movq(*s);
+    //*conf0 = movq(*s);
     *s = rshiftbyte_m128(*s, 8);
-    *conf0 = ~(*conf0);
+    // *conf0 = ~(*conf0);
+    *conf0 = ~tmp_conf0;
 
     u32 reach8, reach9, reach10, reach11;
     ptr = unaligned_load_u64a(itPtr + 8);
@@ -259,10 +260,11 @@ void get_conf_stride_1(const u8 *itPtr, UNUSED const u8 *start_ptr,
     st8 = or128(st8, st12);
     *s = or128(*s, st8);
 
-    *conf8 = movq(*s);
+    u64a tmp_conf8 = movq(*s);
+    //*conf8 = movq(*s);
     *s = rshiftbyte_m128(*s, 8);
-    *conf8 = ~(*conf8);
-
+   // *conf8 = ~(*conf8);
+   *conf8 = ~(tmp_conf8);
 #else
     u64a reach0 = andn(domain_mask_flipped, itPtr);
     u64a reach1 = andn(domain_mask_flipped, itPtr + 1);
